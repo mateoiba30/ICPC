@@ -1,4 +1,4 @@
-
+/*map cuesta más que un vector, porque cada vez que ingreso un dato me lo ordena. En este caso es mejor usar un vector<pair<int,int>> y luego ordenarlo con sort 1 sola vez*/
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -55,6 +55,7 @@ Output
 Print one integer: the maximum number of customers.
 */
 
+
 //1er intento
 // si llega un intervalo de 1 a 10^9 es mucho tiempo y tengo que asignar varios pair<int, int> que se pasan del límite
 //además esta solución tiene un error en algún lado
@@ -89,3 +90,46 @@ Print one integer: the maximum number of customers.
 //     cout << ans << "\n"; //el max_element devuelve un iterador
 //     return 0;
 // }
+
+/*
+otra solución:
+
+opción con map:
+- cada dato se ingresa ordenado  en orden logn
+- al final no debemos ordenar nada
+
+opción con vector
+- cada dato se ingresa sin un orden (O(1))
+- al final debemos ordenar con merge sort (O(nlogn))
+
+ambas opciones tardan aprox lo mismo, son opciones equivalentes para este problema. Lo malo de usar map es que desp tengo que manipular iteradores (casi nada accede más rápido a un dato que un vector, por eso el usar iteradores es más lento)
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+  int main() {
+      int n;
+      cin>> n;
+      
+      vector<pair<int,int>>events;
+      
+      for(int i = 0; i < n; ++i){
+      int a, b;
+      cin>> a >> b;
+      events.push_back({a, 1});
+      events.push_back({b, -1});
+      }
+      sort(events.begin(), events.end());
+      
+      int current = 0;
+      int max_costumers=0;
+      
+      for(auto[time, type]: events){
+          current += type;
+          max_costumers= max(max_costumers, current);
+          
+      }
+      cout<< max_costumers << "\n";
+      return 0;
+  }
+*/
