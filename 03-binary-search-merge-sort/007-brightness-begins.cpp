@@ -5,11 +5,36 @@ using namespace std;
 
 int main(){
     FIN; //fast input
-
     //aplciar binari search? desconozco la cota superior para este problema
+    int t;
+    long long k;
+    cin >> t;
+
+    for (int m=0; m<t; m++){
+        cin >> k;
+        
+        long long l = 0, r = 2e18, n, result;
+        while(r-l>1){
+            n = (l+r)/2;
+
+            result = n - (long long)sqrtl(n); //result is the "K" generated
+            if(result>=k)
+                r = n;
+            else
+                l = n;
+        }
+
+        //if(r == n) //no nececsario chequear porque la solución seguro existe
+
+        cout << r<< "\n";
+    }
 
     return 0;
 }
+
+/*
+cada bombilla cambia de estado cuantos divisores tenga. Si tiene divisores impar entonces queda apagada, si tiene un número par queda prendida. Solo los cuadrados perfectos tienen un nro impar de divisores (1^2, 2^2, 3^2, etc); entonces la cantidad de bombillas prendidas (k) es de N - cant de cuadrados perfectos, siendo N la cantidad de bombillas a usar. Para saber cuantos cuadrados perfectos hay de 1 a N debemos tomar la parte entera (truncar) de la raíz cuadrada de N: de 1 a 10 hay (10)^0.5 ~= 3.16 ~= 3 cuadrados perfectos (1, 4 y 9).
+*/
 
 /*
 A. Brightness Begins
