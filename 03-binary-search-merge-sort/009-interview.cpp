@@ -3,26 +3,35 @@
 
 using namespace std;
 
-long long query(int l, int r){ //para preguntarle al juez con su formato. Esto es por organización
-    cout << "? " << (r-l+1) << " ";
-    for(int i = l; i<=r; i++) cout << i<< " ";
-    cout << endl; //improtante hacer endl y no "\n"
-    long long suma = 0;
-    cin>>suma;
-    return suma;
+// long long query(int l, int r){ //para preguntarle al juez con su formato. Esto es por organización
+//     cout << "? " << (r-l+1);
+//     for(int i = l; i<=r; i++) cout << " " << i;
+//     cout << endl; //improtante hacer endl y no "\n"
+//     long long suma = 0;
+//     cin>>suma; //el x que me manda el juez
+//     return suma;
+// }
+long long query (int l,int r) {
+	cout << "? " << r;
+	for (int i = 0; i < r; i++) cout << " " << i+1;
+	cout << endl;
+	ll suma;
+	cin >> suma;
+	return suma;
 }
+ 
 
 void solve(){
     int n;
-    cin >> n;
+    cin >> n; //number of piles
     vector <int> a(n);
-    for(int i=0; i<n; i++) cin >> a[i];
+    for(int i=0; i<n; i++) cin >> a[i];//receive the number of rocks of each pile
     int l = -1, r = n;
     while(r-l > 1){ //binary search
         int med = (r+l)/2;
         long long rta = query(l, med+1);
         long long suma = 0;
-        for(int i=0; i <= med; i++){
+        for(int i=0; i <= med; i++){ //calculamos la suma de pesos si no estaría la piedra especial
             suma += a[i];
         }
         if(rta > suma){
