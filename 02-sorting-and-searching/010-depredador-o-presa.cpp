@@ -5,19 +5,50 @@ using namespace std;
 int main() {
     FIN;
 
-    int n,a,b;
+    long long n,a,b,val;
     cin >> n;
     cin >> a;
     cin >> b;
-    vector<int> presas(n);
+    vector<long long> animales(n);
+    vector<long long> animalesOrdenados(n);
+    vector<pair<long long,long long>> presasDepredadores(n);
 
     for (int i=0; i<n; i++){
-        presas[i]=0;
+        cin >> val;
+        animales[i]=val;
+        animalesOrdenados[i]=val;
+    }
+
+    sort(animalesOrdenados.begin(), animalesOrdenados.end()); //sort no devuelve nada, primero debemos copiar el vector
+
+    for(int i=0; i<n; i++){
+        long long val = animales[i];
+        long long aux;
+
+        //para buscar todos los elementos dentro de un rango, buscar el primer elemento que vale hasta el primer elemento que no vale, así después no tengo que sumar 1 ni restar  1
+
+        //cuento presas entre (val-b, val-a]
+        auto itMenorPresa = upper_bound(animalesOrdenados.begin(), animalesOrdenados.end(), val-b); //x > val-b (no se incluye a val-b en el rango)
+        auto itMayorPresa = upper_bound(animalesOrdenados.begin(), animalesOrdenados.end(), val-a); //y > val-a (me paso del rango máximo val-a y doy un paso para atrás para estar en el último valor >= val-a)
+        aux = distance(itMenorPresa,itMayorPresa); //sumo 1 porque si ambos iteradores apuntan al mismo animal, me devolvería 0
+        // cerr << aux << endl;
+        presasDepredadores[i].first = max(0LL, aux); //si no hay menor presa entonces itMenorPresa apuntaría al final, resultando en un número negativo
+
+        //cuento depredadores entre [val+a, val+b)
+        auto itMenorDepredador = lower_bound(animalesOrdenados.begin(), animalesOrdenados.end(), val+a); //busco el primer elemento >= val+a
+        auto itMayorDepredador = lower_bound(animalesOrdenados.begin(), animalesOrdenados.end(), val+b); //busco el primer elemento mayor a val+b y luego voy una posición atrás
+        aux = distance(itMenorDepredador, itMayorDepredador);
+        presasDepredadores[i].second = max(0LL, aux);
+    }
+
+    for (int i=0; i<n; i++){
+        cout << presasDepredadores[i].second << " " << presasDepredadores[i].first << "\n";
     }
 
     return 0;
 }
 
+//failed attemp
 // #include <bits/stdc++.h>
 // #define FIN ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 // using namespace std;
